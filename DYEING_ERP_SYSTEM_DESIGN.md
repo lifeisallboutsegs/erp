@@ -770,42 +770,45 @@ Current stock is a projection from posted ledger entries. Store periodic snapsho
 ```mermaid
 flowchart TB
     subgraph Users
-      WEB[Planning, lab, QA, stores, management web app]
-      PWA[Offline-capable shop-floor & warehouse PWA]
-      PORTAL[Customer/supplier portal]
+      WEB["Planning, lab, QA, stores, management web app"]
+      PWA["Offline-capable shop-floor & warehouse PWA"]
+      PORTAL["Customer/supplier portal"]
     end
 
-    subgraph Core[Transactional core - modular monolith]
-      API[API + workflow/application services]
-      MOD[Orders | Inventory | Lab | Recipe | Planning | MES | QC | Dispatch | HR/Payroll | Cost | EHS | Maintenance]
-      DB[(PostgreSQL transactional DB)]
-      OBJ[(Object/document storage)]
-      OUT[Transactional outbox + event bus]
+    subgraph Core["Transactional core - modular monolith"]
+      API["API + workflow/application services"]
+      MOD["Orders | Inventory | Lab | Recipe | Planning | MES | QC | Dispatch | HR/Payroll | Cost | EHS | Maintenance"]
+      DB[("PostgreSQL transactional DB")]
+      OBJ[("Object/document storage")]
+      OUT["Transactional outbox + event bus"]
     end
 
-    subgraph Edge[Factory edge]
-      GW[Industrial integration gateway]
-      BUF[(Local store-and-forward buffer)]
-      DEV[PLC/controllers | dispensers | scales | spectro | meters]
+    subgraph Edge["Factory edge"]
+      GW["Industrial integration gateway"]
+      BUF[("Local store-and-forward buffer")]
+      DEV["PLC/controllers | dispensers | scales | spectro | meters"]
     end
 
     subgraph External
-      ERP[Odoo/ERPNext/accounting/VAT]
-      BI[Analytics warehouse/BI]
-      MSG[Email/SMS/approved messaging]
-      BUYER[Buyer/ZDHC/customer systems]
+      ERP["Odoo/ERPNext/accounting/VAT"]
+      BI["Analytics warehouse/BI"]
+      MSG["Email/SMS/approved messaging"]
+      BUYER["Buyer/ZDHC/customer systems"]
     end
 
     WEB --> API
     PWA --> API
     PORTAL --> API
+
     API --> MOD
     MOD --> DB
     MOD --> OBJ
     DB --> OUT
+
     DEV <--> GW
     GW <--> BUF
     GW <--> API
+
     OUT --> ERP
     OUT --> BI
     OUT --> MSG
